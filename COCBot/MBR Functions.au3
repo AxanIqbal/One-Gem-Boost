@@ -305,3 +305,5 @@
 #include "functions\Config\applyConfig.au3"
 #include "functions\Config\readConfig.au3"
 #include "functions\Config\saveConfig.au3"
+
+#include "functions\CreateArmy\getArmyHeroes\CheckHeroBoost.au3"
