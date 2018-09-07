@@ -10,8 +10,6 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
-Global $HeroTimeRem[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
-Local $HeroTime[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
 Local $sHeroTime[3] = ["", "", ""]
 
 Func CheckHeroBoost()
@@ -23,11 +21,7 @@ Func CheckHeroBoost()
 
 	checkMainScreen()
 	For $index = 0 To 2
-		If ProfileSwitchAccountEnabled() Then
-			$CurrHeroBTime[$index] = $HeroTime[$g_iCurAccount][$index]
-		EndIf
-
-		Local $i_heroTime = ($CurrHeroBTime[$index] - (_DateDiff("n", $HeroTimeRem[$g_iCurAccount][$index], _NowCalc())))
+		Local $i_heroTime = ($HeroTime[$g_iCurAccount][$index] - (_DateDiff("n", $HeroTimeRem[$g_iCurAccount][$index], _NowCalc())))
 
 		If $g_bFirstStart Or $i_heroTime < 0 Or $HeroTimeRem[$g_iCurAccount][$index] = "" Then
 
@@ -45,7 +39,7 @@ Func CheckHeroBoost()
 				EndIf
 			EndIf
 
-			If _DateIsValid($CurrHeroBTime[$index]) Then
+			If _DateIsValid($HeroTime[$g_iCurAccount][$index]) Then
 
 			EndIf
 
@@ -81,8 +75,8 @@ Func CheckHeroBoost()
 			If $sHeroTime[$index] <> "none" Then
 				If $g_bDebugSetlog Then setLog("inside ConvertOCRLongTime : " & $sHeroTime[$index], $COLOR_INFO)
 				$HeroTimeRem[$g_iCurAccount][$index] = _NowCalc()
-				$CurrHeroBTime[$index] = ConvertOCRLongTime("Hero Time", $sHeroTime[$index], False)
-				SetDebugLog("$sResult QuickMIS OCR: " & $sHeroTime[$index] & " (" & Round($CurrHeroBTime[$index], 2) & " minutes)")
+				$HeroTime[$g_iCurAccount][$index] = ConvertOCRLongTime("Hero Time", $sHeroTime[$index], False)
+				SetDebugLog("$sResult QuickMIS OCR: " & $sHeroTime[$index] & " (" & Round($HeroTime[$g_iCurAccount][$index], 2) & " minutes)")
 				If $index = 0 Then SetLog("King Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
 				If $index = 1 Then SetLog("Queen Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
 				If $index = 2 Then SetLog("Warden Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
@@ -94,18 +88,13 @@ Func CheckHeroBoost()
 
 			If $g_bDebugSetlog Then
 				SetLog("$HeroTimeRem[" & $index & "] = " & $HeroTimeRem[$g_iCurAccount][$index], $COLOR_INFO)
-				SetLog("$CurrHeroBTime[" & $index & "] = " & $CurrHeroBTime[$index], $COLOR_INFO)
-			EndIf
-
-			If ProfileSwitchAccountEnabled() Then
-				$HeroTime[$g_iCurAccount][$index] = $CurrHeroBTime[$index]
-				SetLog("$HeroTime[" & $g_iCurAccount & "][" & $index & "] =  " & $HeroTime[$g_iCurAccount][$index], $COLOR_INFO)
+				SetLog("$HeroTime[$g_iCurAccount][" & $index & "] = " & $HeroTime[$g_iCurAccount][$index], $COLOR_INFO)
 			EndIf
 
 			If $g_bDebugSetlog Then SetLog("-------------------------------------------", $COLOR_INFO)
 		Else
 			If $g_bDebugSetlog Then
-				SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$index], $COLOR_ERROR)
+				SetLog("$HeroTime[$g_iCurAccount] = " & $HeroTime[$g_iCurAccount][$index], $COLOR_ERROR)
 				SetLog("$HeroTimeRem[" & $index & "] = " & $HeroTimeRem[$g_iCurAccount][$index], $COLOR_ERROR)
 				SetLog("Time Diff HeroTime = " & $i_heroTime, $COLOR_ERROR)
 			EndIf
@@ -115,13 +104,13 @@ Func CheckHeroBoost()
 EndFunc   ;==>CheckHeroBoost
 
 Func HeroBoostTimeDiv($aResultHeroes, $i)
-	Local $iheroTime = ($CurrHeroBTime[$i] - (_DateDiff("n", $HeroTimeRem[$g_iCurAccount][$i], _NowCalc())))
+	Local $iheroTime = ($HeroTime[$g_iCurAccount][$i] - (_DateDiff("n", $HeroTimeRem[$g_iCurAccount][$i], _NowCalc())))
 
-	If $CurrHeroBTime[$i] <> "" Or $CurrHeroBTime[$i] <> 0 Then
+	If $HeroTime[$g_iCurAccount][$i] <> "" Or $HeroTime[$g_iCurAccount][$i] <> 0 Then
 
 		If $g_bDebugSetlog Then
 			SetLog("$aResultHeroes = " & $aResultHeroes, $COLOR_INFO)
-			SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$i], $COLOR_INFO)
+			SetLog("$HeroTime[$g_iCurAccount] = " & $HeroTime[$g_iCurAccount][$i], $COLOR_INFO)
 			SetLog("$HeroTimeRem[" & $i & "] = " & $HeroTimeRem[$g_iCurAccount][$i], $COLOR_INFO)
 			SetLog("Time Diff HeroTime = " & $iheroTime, $COLOR_INFO)
 		EndIf

@@ -30,12 +30,12 @@ Func applyConfig($bRedrawAtExit = True, $TypeReadSave = "Read") ;Applies the dat
 	; Saved window positions
 	If $g_bAndroidEmbedded = False Then
 		If $g_iFrmBotPosX > -30000 And $g_iFrmBotPosY > -30000 And $g_bFrmBotMinimized = False _
-			And $g_iFrmBotPosX <> $g_WIN_POS_DEFAULT And $g_iFrmBotPosY <> $g_WIN_POS_DEFAULT Then WinMove($g_hFrmBot, "", $g_iFrmBotPosX, $g_iFrmBotPosY)
+				And $g_iFrmBotPosX <> $g_WIN_POS_DEFAULT And $g_iFrmBotPosY <> $g_WIN_POS_DEFAULT Then WinMove($g_hFrmBot, "", $g_iFrmBotPosX, $g_iFrmBotPosY)
 		If $g_iAndroidPosX > -30000 And $g_iAndroidPosY > -30000 And $g_bIsHidden = False _
-			And $g_iAndroidPosX <> $g_WIN_POS_DEFAULT And $g_iAndroidPosY <> $g_WIN_POS_DEFAULT Then HideAndroidWindow(False, False, Default, "applyConfig", 0)
+				And $g_iAndroidPosX <> $g_WIN_POS_DEFAULT And $g_iAndroidPosY <> $g_WIN_POS_DEFAULT Then HideAndroidWindow(False, False, Default, "applyConfig", 0)
 	Else
 		If $g_iFrmBotDockedPosX > -30000 And $g_iFrmBotDockedPosY > -30000 And $g_bFrmBotMinimized = False _
-			And $g_iFrmBotDockedPosX <> $g_WIN_POS_DEFAULT And $g_iFrmBotDockedPosY <> $g_WIN_POS_DEFAULT Then WinMove($g_hFrmBot, "", $g_iFrmBotDockedPosX, $g_iFrmBotDockedPosY)
+				And $g_iFrmBotDockedPosX <> $g_WIN_POS_DEFAULT And $g_iFrmBotDockedPosY <> $g_WIN_POS_DEFAULT Then WinMove($g_hFrmBot, "", $g_iFrmBotDockedPosX, $g_iFrmBotDockedPosY)
 	EndIf
 
 	If $g_iGuiMode <> 1 Then
@@ -43,8 +43,16 @@ Func applyConfig($bRedrawAtExit = True, $TypeReadSave = "Read") ;Applies the dat
 			Switch $TypeReadSave
 				Case "Read"
 					GUICtrlSetState($g_hChkBackgroundMode, $g_bChkBackgroundMode = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+
+					GUICtrlSetState($g_hChkOneGemBoostBarracks, $g_bChkOneGemBoostBarracks ? $GUI_CHECKED : $GUI_UNCHECKED)
+					GUICtrlSetState($g_hChkOneGemBoostSpells, $g_bChkOneGemBoostSpells ? $GUI_CHECKED : $GUI_UNCHECKED)
+					GUICtrlSetState($g_hChkOneGemBoostHeroes, $g_bChkOneGemBoostHeroes ? $GUI_CHECKED : $GUI_UNCHECKED)
 				Case "Save"
 					$g_bChkBackgroundMode = (GUICtrlRead($g_hChkBackgroundMode) = $GUI_CHECKED)
+					
+					$g_bChkOneGemBoostBarracks = (GUICtrlRead($g_hChkOneGemBoostBarracks) = $GUI_CHECKED)
+					$g_bChkOneGemBoostSpells = (GUICtrlRead($g_hChkOneGemBoostSpells) = $GUI_CHECKED)
+					$g_bChkOneGemBoostHeroes = (GUICtrlRead($g_hChkOneGemBoostHeroes) = $GUI_CHECKED)
 			EndSwitch
 		EndIf
 		UpdateBotTitle()
@@ -426,7 +434,7 @@ Func ApplyConfig_600_11($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbClanCastleSpell, $g_iClanCastleSpellsWaitFirst)
 			_GUICtrlComboBox_SetCurSel($g_hCmbClanCastleSpell2, $g_iClanCastleSpellsWaitSecond)
 			For $i = 0 To 2
-				_GUICtrlComboBox_SetCurSel($g_ahCmbClanCastleTroop[$i] , $g_aiClanCastleTroopWaitType[$i])
+				_GUICtrlComboBox_SetCurSel($g_ahCmbClanCastleTroop[$i], $g_aiClanCastleTroopWaitType[$i])
 				GUICtrlSetData($g_ahTxtClanCastleTroop[$i], $g_aiClanCastleTroopWaitQty[$i])
 			Next
 			chkRequestCountCC()
@@ -504,7 +512,7 @@ Func ApplyConfig_600_12($TypeReadSave)
 				EndIf
 			Next
 
-			For $i = $eSiegeWallWrecker to $eSiegeMachineCount - 1
+			For $i = $eSiegeWallWrecker To $eSiegeMachineCount - 1
 				Local $index = $eTroopCount + $g_iCustomDonateConfigs
 				GUICtrlSetState($g_ahChkDonateTroop[$index + $i], $g_abChkDonateTroop[$index + $i] ? $GUI_CHECKED : $GUI_UNCHECKED)
 				If $g_abChkDonateTroop[$index + $i] Then
@@ -566,7 +574,7 @@ Func ApplyConfig_600_12($TypeReadSave)
 				EndIf
 			Next
 
-			For $i = $eSiegeWallWrecker to $eSiegeMachineCount - 1
+			For $i = $eSiegeWallWrecker To $eSiegeMachineCount - 1
 				Local $index = $eTroopCount + $g_iCustomDonateConfigs
 				$g_abChkDonateTroop[$index + $i] = (GUICtrlRead($g_ahChkDonateTroop[$index + $i]) = $GUI_CHECKED)
 				$g_asTxtDonateTroop[$index + $i] = GUICtrlRead($g_ahTxtDonateTroop[$index + $i])
@@ -736,7 +744,7 @@ Func ApplyConfig_auto($TypeReadSave)
 			$g_iTxtSmartMinGold = GUICtrlRead($g_hTxtSmartMinGold)
 			$g_iTxtSmartMinElixir = GUICtrlRead($g_hTxtSmartMinElixir)
 			$g_iTxtSmartMinDark = GUICtrlRead($g_hTxtSmartMinDark)
-    EndSwitch
+	EndSwitch
 EndFunc   ;==>ApplyConfig_auto
 
 Func ApplyConfig_600_17($TypeReadSave)
@@ -1573,7 +1581,7 @@ Func ApplyConfig_600_29_DB_SmartFarm($TypeReadSave)
 			$g_iTxtOutsidePercentage = GUICtrlRead($g_hTxtOutsidePercentage)
 			$g_bDebugSmartFarm = (GUICtrlRead($g_hChkDebugSmartFarm) = $GUI_CHECKED)
 	EndSwitch
-EndFunc
+EndFunc   ;==>ApplyConfig_600_29_DB_SmartFarm
 
 Func ApplyConfig_600_29_LB($TypeReadSave)
 	; <><><><> Attack Plan / Search & Attack / Activebase / Attack <><><><>

@@ -307,3 +307,4 @@
 #include "functions\Config\saveConfig.au3"
 
 #include "functions\CreateArmy\getArmyHeroes\CheckHeroBoost.au3"
+#include "functions\Village\CheckOneGem.au3"

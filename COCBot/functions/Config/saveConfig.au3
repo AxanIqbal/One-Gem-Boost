@@ -292,7 +292,7 @@ Func SaveConfig_Debug()
 	_Ini_Add("debug", "debugsetlog", $g_bDebugSetlog ? 1 : 0)
 	_Ini_Add("debug", "debugAndroid", $g_bDebugAndroid ? 1 : 0)
 	_Ini_Add("debug", "debugsetclick", $g_bDebugClick ? 1 : 0)
-	_Ini_Add("debug", "debugFunc", ($g_bDebugFuncTime And $g_bDebugFuncCall)? 1 : 0)
+	_Ini_Add("debug", "debugFunc", ($g_bDebugFuncTime And $g_bDebugFuncCall) ? 1 : 0)
 	_Ini_Add("debug", "disablezoomout", $g_bDebugDisableZoomout ? 1 : 0)
 	_Ini_Add("debug", "disablevillagecentering", $g_bDebugDisableVillageCentering ? 1 : 0)
 	_Ini_Add("debug", "debugdeadbaseimage", $g_bDebugDeadBaseImage ? 1 : 0)
@@ -450,13 +450,13 @@ Func SaveConfig_600_12()
 		EndIf
 	Next
 
-	For $i = $eSiegeWallWrecker to $eSiegeMachineCount - 1
+	For $i = $eSiegeWallWrecker To $eSiegeMachineCount - 1
 		Local $index = $eTroopCount + $g_iCustomDonateConfigs
 		Local $sIniName = $g_asSiegeMachineShortNames[$i]
 		_Ini_Add("donate", "chkDonate" & $sIniName, $g_abChkDonateTroop[$index + $i] ? 1 : 0)
 		_Ini_Add("donate", "txtDonate" & $sIniName, StringReplace($g_asTxtDonateTroop[$index + $i], @CRLF, "|"))
 		_Ini_Add("donate", "txtBlacklist" & $sIniName, StringReplace($g_asTxtBlacklistTroop[$index + $i], @CRLF, "|"))
-	NExt
+	Next
 
 	For $i = 0 To 2
 		_Ini_Add("donate", "cmbDonateCustomA" & $i + 1, $g_aiDonateCustomTrpNumA[$i][0])
@@ -590,6 +590,11 @@ Func SaveConfig_600_22()
 	For $i = 0 To 23
 		$string &= ($g_abBoostBarracksHours[$i] ? "1" : "0") & "|"
 	Next
+	
+	_Ini_Add("boost", "ChkOneGemBoostBarracks", $g_bChkOneGemBoostBarracks ? 1 : 0)
+	_Ini_Add("boost", "ChkOneGemBoostSpells", $g_bChkOneGemBoostSpells ? 1 : 0)
+	_Ini_Add("boost", "ChkOneGemBoostHeroes", $g_bChkOneGemBoostHeroes ? 1 : 0)
+
 	_Ini_Add("planned", "BoostBarracksHours", $string)
 EndFunc   ;==>SaveConfig_600_22
 
@@ -888,7 +893,7 @@ Func SaveConfig_600_29_DB_SmartFarm()
 	_Ini_Add("SmartFarm", "InsidePercentage", $g_iTxtInsidePercentage)
 	_Ini_Add("SmartFarm", "OutsidePercentage", $g_iTxtOutsidePercentage)
 	_Ini_Add("SmartFarm", "DebugSmartFarm", $g_bDebugSmartFarm)
-EndFunc
+EndFunc   ;==>SaveConfig_600_29_DB_SmartFarm
 
 Func SaveConfig_600_29_LB()
 	; <><><><> Attack Plan / Search & Attack / Activebase / Attack <><><><>

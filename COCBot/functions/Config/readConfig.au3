@@ -755,6 +755,11 @@ EndFunc   ;==>ReadConfig_600_19
 Func ReadConfig_600_22()
 	; <><><><> Attack Plan / Train Army / Boost <><><><>
 	$g_abBoostBarracksHours = StringSplit(IniRead($g_sProfileConfigPath, "planned", "BoostBarracksHours", "1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1"), "|", $STR_NOCOUNT)
+
+	IniReadS($g_bChkOneGemBoostBarracks, $g_sProfileConfigPath, "boost", "ChkOneGemBoostBarracks", False, "Bool")
+	IniReadS($g_bChkOneGemBoostSpells, $g_sProfileConfigPath, "boost", "ChkOneGemBoostSpells", False, "Bool")
+    IniReadS($g_bChkOneGemBoostHeroes, $g_sProfileConfigPath, "boost", "ChkOneGemBoostHeroes", False, "Bool")
+    
 	For $i = 0 To 23
 		$g_abBoostBarracksHours[$i] = ($g_abBoostBarracksHours[$i] = "1")
 	Next
