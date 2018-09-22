@@ -13,14 +13,19 @@
 Local $sHeroTime[3] = ["", "", ""]
 
 Func CheckHeroBoost()
-	SetLog("Checking Hero Boost Time", $COLOR_INFO)
+	SetLog("Checking Hero's Boost Time", $COLOR_INFO)
 
 	Local $sHeroName[3] = ["King", "Queen", "Warden"]
 	Local $bIsBoostedImg = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
 	Local $bHeroTimeOCRImgs = @ScriptDir & "\imgxml\HeroTime"
 
-	checkMainScreen()
 	For $index = 0 To 2
+
+		If $g_iHeroUpgrading[$index] == 1 Then
+			SetLog($sHeroName[$index] & " is on upgrade skip it's boost time check.", $COLOR_INFO)
+			ContinueLoop
+		EndIf
+
 		Local $i_heroTime = ($HeroTime[$g_iCurAccount][$index] - (_DateDiff("n", $HeroTimeRem[$g_iCurAccount][$index], _NowCalc())))
 
 		If $g_bFirstStart Or $i_heroTime < 0 Or $HeroTimeRem[$g_iCurAccount][$index] = "" Then
@@ -28,14 +33,17 @@ Func CheckHeroBoost()
 			If $index = 0 Then
 				If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
 					SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
+					ContinueLoop
 				EndIf
 			ElseIf $index = 1 Then
 				If $g_aiQueenAltarPos[0] = "" Or $g_aiQueenAltarPos[0] = -1 Then
 					SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
+					ContinueLoop
 				EndIf
 			ElseIf $index = 2 Then
 				If $g_aiWardenAltarPos[0] = "" Or $g_aiWardenAltarPos[0] = -1 Then
 					SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
+					ContinueLoop
 				EndIf
 			EndIf
 
@@ -72,18 +80,14 @@ Func CheckHeroBoost()
 				EndIf
 			EndIf
 
-			If $sHeroTime[$index] <> "none" Then
+			If $sHeroTime[$index] <> "none" And $sHeroTime[$index] <> "" Then ;Sometime quickmis returning empty value
 				If $g_bDebugSetlog Then setLog("inside ConvertOCRLongTime : " & $sHeroTime[$index], $COLOR_INFO)
 				$HeroTimeRem[$g_iCurAccount][$index] = _NowCalc()
-				$HeroTime[$g_iCurAccount][$index] = ConvertOCRLongTime("Hero Time", $sHeroTime[$index], False)
+				$HeroTime[$g_iCurAccount][$index] = ConvertOCRTime("Hero Time", $sHeroTime[$index], False)
 				SetDebugLog("$sResult QuickMIS OCR: " & $sHeroTime[$index] & " (" & Round($HeroTime[$g_iCurAccount][$index], 2) & " minutes)")
-				If $index = 0 Then SetLog("King Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
-				If $index = 1 Then SetLog("Queen Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
-				If $index = 2 Then SetLog("Warden Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
+				SetLog($sHeroName[$index] & " Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
 			Else
-				If $index = 0 And $g_bDebugSetlog Then SetLog("King Not Boosted", $COLOR_ERROR)
-				If $index = 1 And $g_bDebugSetlog Then SetLog("Queen Not Boosted", $COLOR_ERROR)
-				If $index = 2 And $g_bDebugSetlog Then SetLog("Warden Not Boosted", $COLOR_ERROR)
+				SetLog($sHeroName[$index] & " not boosted skip it's boost time check.", $COLOR_INFO)
 			EndIf
 
 			If $g_bDebugSetlog Then

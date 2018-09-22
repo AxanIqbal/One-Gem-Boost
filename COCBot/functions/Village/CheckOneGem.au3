@@ -15,25 +15,25 @@ Local $bBoostimage = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
 Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
 
 Func OneGemBoost()
-	Local $ChkIfBoostHero = _DateDiff("n", $initBoostTimeHeroes, _NowCalc())
-	Local $ChkIfBoostTroops = _DateDiff("n", $initBoostTimeTroops, _NowCalc())
 
-	SetDebugLog("OneGemBoost $initBoostTimeHeroes = " & $initBoostTimeHeroes & " $ChkIfBoostHero = " & $ChkIfBoostHero, $COLOR_DEBUG)
+	If $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Or $g_bChkOneGemBoostHeroes Then SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
+	
+	If $g_bChkOneGemBoostHeroes Then
+		Local $ChkIfBoostHero = _DateDiff("n", $initBoostTimeHeroes, _NowCalc())
+		For $index = 0 To 2
+			Local $i_heroBoostTimeDiff = Round((_DateDiff("s", $HeroTimeRem[$g_iCurAccount][$index], _NowCalc()) / 60), 2)
+			Local $i_heroTime = $HeroTime[$g_iCurAccount][$index] - $i_heroBoostTimeDiff
 
-	SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
-	For $index = 0 To 2
-		
-		Local $i_heroBoostTimeDiff = Round((_DateDiff("s", $HeroTimeRem[$g_iCurAccount][$index], _NowCalc()) / 60), 2)
-		Local $i_heroTime = $HeroTime[$g_iCurAccount][$index] - $i_heroBoostTimeDiff
+			If $g_bFirstStart Or $initBoostTimeHeroes = "" Or $ChkIfBoostHero > 60 Or $i_heroTime <= 0 Then
+				CheckHeroOneGem($index)
+				$initBoostTimeHeroes = _NowCalc()
+			EndIf
+		Next
+	EndIf
 
-		If $g_bFirstStart Or $initBoostTimeHeroes = "" Or $ChkIfBoostHero > 60 Or $i_heroTime <= 0 Then
-			If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem($index)
-			$initBoostTimeHeroes = _NowCalc()
-		EndIf
-	Next
-
-	If $g_bFirstStart Or $initBoostTimeTroops = "" Or $ChkIfBoostTroops > 60 Then
-		If $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
+	If $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
+		Local $ChkIfBoostTroops = _DateDiff("n", $initBoostTimeTroops, _NowCalc())
+		If $g_bFirstStart Or $initBoostTimeTroops = "" Or $ChkIfBoostTroops > 60 Then
 			OpenArmyOverview(True, "OneGemBoost()")
 			If $g_bChkOneGemBoostBarracks Then CheckTroopsOneGem()
 			If $g_bChkOneGemBoostSpells Then CheckSpellsOneGem()
@@ -64,14 +64,17 @@ Func CheckHeroOneGem($index)
 	If $index = 0 Then
 		If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
 			SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
+			Return
 		EndIf
 	ElseIf $index = 1 Then
 		If $g_aiQueenAltarPos[0] = "" Or $g_aiQueenAltarPos[0] = -1 Then
 			SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
+			Return
 		EndIf
 	ElseIf $index = 2 Then
 		If $g_aiWardenAltarPos[0] = "" Or $g_aiWardenAltarPos[0] = -1 Then
 			SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
+			Return
 		EndIf
 	EndIf
 
